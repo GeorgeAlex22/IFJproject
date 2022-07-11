@@ -11,3 +11,6 @@ HISTOGRAMS:
 -after vertex cut
     npoints
     bx:by
+
+TODO:
+    plot dE/dx projection for some values of p 
