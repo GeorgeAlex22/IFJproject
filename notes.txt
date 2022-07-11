@@ -1,0 +1,13 @@
+11/7/2022
+
+mean VertexZ = -580
+VertexZ > -590 && VertexZ < -570
+
+HISTOGRAMS:
+
+-before & after vertex cut
+    VertexZ
+
+-after vertex cut
+    npoints
+    bx:by
