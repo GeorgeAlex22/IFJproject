@@ -81,11 +81,11 @@ void tracks_tree::Loop()
             double p = sqrt(px * px + py * py + pz * pz);
             if (dEdx > 0)
             {
-               h_dEdxVSp_pos_before->Fill(log10(p), log10(dEdx));
+               h_dEdxVSp_pos_before->Fill(log10(p), dEdx);
             }
             if (dEdx < 0)
             {
-               h_dEdxVSp_neg_before->Fill(log10(p), log10(-dEdx));
+               h_dEdxVSp_neg_before->Fill(log10(p), -dEdx);
             }
          }
       }
