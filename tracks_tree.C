@@ -47,11 +47,11 @@ void tracks_tree::Loop()
    TH2D *h_bxby_before = new TH2D("h_bxby_before", "bx vs by", 100, -11, 11, 100, -11, 11);
    TH2D *h_bxby_after = new TH2D("h_bxby_after", "bx vs by", 100, -4, 4, 100, -2, 2);
 
-   TH2D *h_dEdxVSp_pos_before = new TH2D("h_dEdxVSp_pos_before", "dE/dx vs p", 100, 0, 0, 100, 0, 0);
-   TH2D *h_dEdxVSp_neg_before = new TH2D("h_dEdxVSp_neg_before", "dE/dx vs p", 100, 0, 0, 100, 0, 0);
+   TH2D *h_dEdxVSp_pos_before = new TH2D("h_dEdxVSp_pos_before", "dE/dx vs p", 100, 0, 0, 100, 0.5, 2);
+   TH2D *h_dEdxVSp_neg_before = new TH2D("h_dEdxVSp_neg_before", "dE/dx vs p", 100, 0, 0, 100, 0.5, 2);
 
-   TH2D *h_dEdxVSp_pos_after = new TH2D("h_dEdxVSp_pos_after", "dE/dx vs p", 100, 0, 0, 100, 0, 0);
-   TH2D *h_dEdxVSp_neg_after = new TH2D("h_dEdxVSp_neg_after", "dE/dx vs p", 100, 0, 0, 100, 0, 0);
+   TH2D *h_dEdxVSp_pos_after = new TH2D("h_dEdxVSp_pos_after", "dE/dx vs p", 100, 0, 0, 100, 0.5, 2);
+   TH2D *h_dEdxVSp_neg_after = new TH2D("h_dEdxVSp_neg_after", "dE/dx vs p", 100, 0, 0, 100, 0.5, 2);
 
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry = 0; jentry < nentries; jentry++)
