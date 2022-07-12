@@ -1,5 +1,7 @@
+
+
 tracks_tree.exe: tracks_tree.C tracks_tree.h
-	g++ tracks_tree.C -o tracks_tree.exe `root-config --cflags --glibs`
+	g++ tracks_tree.C -o tracks_tree.exe `root-config --cflags --glibs` -I./BetheBloch/src/include -I./BetheBloch/kit-dedx-fitter/src BetheBloch/BetheBlochWrapper.so
 
 run: tracks_tree.exe ArSc150_charged_tree.root histograms.root
 	./tracks_tree.exe histograms.root ArSc150_charged_tree.root

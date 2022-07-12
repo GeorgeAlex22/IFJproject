@@ -1,5 +1,6 @@
 #define tracks_tree_cxx
 #include "tracks_tree.h"
+#include "defaultBetheBloch.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>

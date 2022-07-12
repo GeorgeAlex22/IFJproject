@@ -55,7 +55,7 @@ void plot()
   h_dEdxVSp_neg_before->GetXaxis()->SetTitle("log_{10}(p)");
 
   TCanvas c;
-  c.SaveAs("plots.pdf["); // opening pdf
+  // c.SaveAs("plots.pdf["); // opening pdf
 
   // draw all histograms
   c.SetLogy();
@@ -71,12 +71,14 @@ void plot()
   l_right->SetLineStyle(9);
   l_right->Draw();
 
-  c.SaveAs("plots.pdf"); // plot
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_vz_before.pdf"); // plot
 
   // next plot
   c.Clear();
   h_vz_after->Draw("hist");
-  c.SaveAs("plots.pdf");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_vz_after.pdf");
 
   // next plot
   c.Clear();
@@ -92,12 +94,14 @@ void plot()
   l_right->SetLineStyle(9);
   l_right->Draw();
 
-  c.SaveAs("plots.pdf");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_NPratio_before.pdf");
 
   // next plot
   c.Clear();
   h_NPratio_after->Draw("hist");
-  c.SaveAs("plots.pdf");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_NPratio_after.pdf");
 
   // next plot
   c.Clear();
@@ -110,22 +114,26 @@ void plot()
   box->SetFillStyle(0);
   box->Draw();
 
-  c.SaveAs("plots.pdf");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_bxby_before.pdf");
 
   // next plot
   c.Clear();
   h_bxby_after->Draw("colz");
-  c.SaveAs("plots.pdf");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_bxby_after.pdf");
 
   // next plot
   c.Clear();
   h_dEdxVSp_pos_before->Draw("colz");
-  c.SaveAs("plots.pdf");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_dEdxVSp_pos_before.pdf");
 
   // next plot
   c.Clear();
   h_dEdxVSp_neg_before->Draw("colz");
-  c.SaveAs("plots.pdf");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_dEdxVSp_neg_before.pdf");
 
-  c.SaveAs("plots.pdf]"); // closing pdf
+  // c.SaveAs("plots.pdf]"); // closing pdf
 }
