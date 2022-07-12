@@ -54,10 +54,16 @@ void tracks_tree::Loop()
    TH2D *h_bxby_after = new TH2D("h_bxby_after", "bx vs by", 100, -4, 4, 100, -2, 2);
 
    TH2D *h_dEdxVSp_pos_before = new TH2D("h_dEdxVSp_pos_before", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
-   TH2D *h_dEdxVSp_neg_before = new TH2D("h_dEdxVSp_neg_before", "p vs dE/dx", 100, 0, 0, 100, 0.5, 2);
+   TH2D *h_dEdxVSp_neg_before = new TH2D("h_dEdxVSp_neg_before", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
 
-   TH2D *h_dEdxVSp_pos_after = new TH2D("h_dEdxVSp_pos_after", "p vs dE/dx", 100, 0, 0, 100, 0.5, 2.0);
-   TH2D *h_dEdxVSp_neg_after = new TH2D("h_dEdxVSp_neg_after", "p vs dE/dx", 100, 0, 0, 100, 0.5, 2.0);
+   TH2D *h_dEdxVSp_pos_after = new TH2D("h_dEdxVSp_pos_after", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
+   TH2D *h_dEdxVSp_neg_after = new TH2D("h_dEdxVSp_neg_after", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
+
+   TH2D *h_dEdxVSp_pos_probCut = new TH2D("h_dEdxVSp_pos_probCut", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
+   TH2D *h_dEdxVSp_neg_probCut = new TH2D("h_dEdxVSp_neg_probCut", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
+
+   double dEdx_BBp;
+   double dEdx_BBk;
 
    Long64_t nbytes = 0, nb = 0;
 
@@ -89,6 +95,22 @@ void tracks_tree::Loop()
             if (dEdx > 0)
             {
                h_dEdxVSp_pos_before->Fill(log10(p), dEdx);
+
+               dEdx_BBp = Dedx::defaultBetheBloch(3, p);
+               dEdx_BBk = Dedx::defaultBetheBloch(2, p);
+
+               if (log10(p) >= 0.6 && log10(p) <= 2.1)
+               {
+                  if (dEdx >= 0.5 && dEdx <= dEdx_BBp + 0.15 * (dEdx_BBk - dEdx_BBp))
+                  {
+                     h_dEdxVSp_pos_after->Fill(log10(p), dEdx);
+                  }
+
+                  if (probProton >= 0.9)
+                  {
+                     h_dEdxVSp_pos_probCut->Fill(log10(p), dEdx);
+                  }
+               }
             }
             if (dEdx < 0)
             {

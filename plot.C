@@ -14,6 +14,10 @@ void plot()
   TH2F *h_bxby_after = (TH2F *)f.Get("h_bxby_after");
   TH2F *h_dEdxVSp_pos_before = (TH2F *)f.Get("h_dEdxVSp_pos_before");
   TH2F *h_dEdxVSp_neg_before = (TH2F *)f.Get("h_dEdxVSp_neg_before");
+  TH2F *h_dEdxVSp_pos_after = (TH2F *)f.Get("h_dEdxVSp_pos_after");
+  TH2F *h_dEdxVSp_neg_after = (TH2F *)f.Get("h_dEdxVSp_neg_after");
+  TH2F *h_dEdxVSp_pos_probCut = (TH2F *)f.Get("h_dEdxVSp_pos_probCut");
+  TH2F *h_dEdxVSp_neg_probCut = (TH2F *)f.Get("h_dEdxVSp_neg_probCut");
 
   TGraph *bethebloch_e = (TGraph *)g.Get("bethebloch_e");
   TGraph *bethebloch_pion = (TGraph *)g.Get("bethebloch_pion");
@@ -147,6 +151,33 @@ void plot()
   h_dEdxVSp_neg_before->Draw("colz");
   // c.SaveAs("plots.pdf");
   c.SaveAs("./plots/h_dEdxVSp_neg_before.pdf");
+
+  // next plot
+  c.Clear();
+  h_dEdxVSp_pos_after->Draw("colz");
+  bethebloch_e->Draw("same");
+  bethebloch_pion->Draw("same");
+  bethebloch_k->Draw("same");
+  bethebloch_p->Draw("same");
+  bethebloch_d->Draw("same");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_dEdxVSp_pos_after.pdf");
+
+  // next plot
+  c.Clear();
+  h_dEdxVSp_neg_after->Draw("colz");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_dEdxVSp_neg_after.pdf");
+
+  c.Clear();
+  h_dEdxVSp_pos_probCut->Draw("colz");
+  bethebloch_e->Draw("same");
+  bethebloch_pion->Draw("same");
+  bethebloch_k->Draw("same");
+  bethebloch_p->Draw("same");
+  bethebloch_d->Draw("same");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_dEdxVSp_pos_probCut.pdf");
 
   // c.SaveAs("plots.pdf]"); // closing pdf
 }
