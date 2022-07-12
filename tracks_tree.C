@@ -2,6 +2,7 @@
 #include "tracks_tree.h"
 #include "defaultBetheBloch.h"
 #include <TH2.h>
+#include <TGraph.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <iostream>
@@ -55,6 +56,7 @@ void tracks_tree::Loop()
    TH2D *h_dEdxVSp_neg_after = new TH2D("h_dEdxVSp_neg_after", "dE/dx vs p", 100, 0, 0, 100, 0.5, 2);
 
    Long64_t nbytes = 0, nb = 0;
+   nentries = 10000;
    for (Long64_t jentry = 0; jentry < nentries; jentry++)
    {
       Long64_t ientry = LoadTree(jentry);
