@@ -3,6 +3,7 @@ void plot()
 
   // opening files
   TFile f("histograms.root");
+  TFile g("bethebloch.root");
 
   // get histograms from the files
   TH1F *h_vz_before = (TH1F *)f.Get("h_vz_before");
@@ -13,6 +14,12 @@ void plot()
   TH2F *h_bxby_after = (TH2F *)f.Get("h_bxby_after");
   TH2F *h_dEdxVSp_pos_before = (TH2F *)f.Get("h_dEdxVSp_pos_before");
   TH2F *h_dEdxVSp_neg_before = (TH2F *)f.Get("h_dEdxVSp_neg_before");
+
+  TGraph *bethebloch_e = (TGraph *)g.Get("bethebloch_e");
+  TGraph *bethebloch_pion = (TGraph *)g.Get("bethebloch_pion");
+  TGraph *bethebloch_k = (TGraph *)g.Get("bethebloch_k");
+  TGraph *bethebloch_p = (TGraph *)g.Get("bethebloch_p");
+  TGraph *bethebloch_d = (TGraph *)g.Get("bethebloch_d");
 
   // set line colors
   // h_vz_before->SetLineColor(1);
@@ -47,11 +54,11 @@ void plot()
   h_bxby_after->GetYaxis()->SetTitle("by [cm]");
 
   // h_dEdxVSp_pos_before
-  h_dEdxVSp_pos_before->GetYaxis()->SetTitle("log_{10}(dEdx)");
+  h_dEdxVSp_pos_before->GetYaxis()->SetTitle("dE/dx");
   h_dEdxVSp_pos_before->GetXaxis()->SetTitle("log_{10}(p)");
 
   // h_dEdxVSp_neg_before
-  h_dEdxVSp_neg_before->GetYaxis()->SetTitle("log_{10}(dEdx)");
+  h_dEdxVSp_neg_before->GetYaxis()->SetTitle("dE/dx");
   h_dEdxVSp_neg_before->GetXaxis()->SetTitle("log_{10}(p)");
 
   TCanvas c;
@@ -126,6 +133,12 @@ void plot()
   // next plot
   c.Clear();
   h_dEdxVSp_pos_before->Draw("colz");
+  bethebloch_e->Draw("same");
+  bethebloch_pion->Draw("same");
+  bethebloch_k->Draw("same");
+  bethebloch_p->Draw("same");
+  bethebloch_d->Draw("same");
+
   // c.SaveAs("plots.pdf");
   c.SaveAs("./plots/h_dEdxVSp_pos_before.pdf");
 
