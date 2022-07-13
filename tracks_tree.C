@@ -79,12 +79,14 @@ void tracks_tree::Loop()
    double efficiency;
    double purity;
 
+   int eventCounter = 0;
+
    Long64_t nbytes = 0, nb = 0;
 
-   nb = fChain->GetEntry(0);
-   int tmp_Run_number = Run_number;
+   // nb = fChain->GetEntry(0);
+   int tmp_Run_number; // = Run_number;
    // cout << "Run number: " << tmp_Run_number << endl;
-   int tmp_Event_id = Event_id;
+   int tmp_Event_id; //= Event_id;
    // cout << "Event id: " << tmp_Event_id << endl;
 
    for (Long64_t jentry = 0; jentry < nentries; jentry++)
@@ -149,7 +151,7 @@ void tracks_tree::Loop()
                      }
                   }
 
-                  if (probProton >= 0.95)
+                  if (probProton >= 0.9)
                   {
                      h_dEdxVSp_pos_probCut->Fill(log10(p), dEdx);
                   }
@@ -159,48 +161,45 @@ void tracks_tree::Loop()
             {
                h_dEdxVSp_neg_before->Fill(log10(p), -dEdx);
             }
-         }
-      }
 
-      // Update tmp_Run_number and tmp_Event_id
-      tmp_Run_number = Run_number;
-      tmp_Event_id = Event_id;
+            // Update tmp_Run_number and tmp_Event_id
+            tmp_Run_number = Run_number;
+            tmp_Event_id = Event_id;
 
-      // Check if the next event is the same as this
-      nb = fChain->GetEntry(jentry + 1);
-      bool sameEvent = (tmp_Run_number == Run_number) && (tmp_Event_id == Event_id);
+            // Check if the next event is the same as this
+            nb = fChain->GetEntry(jentry + 1);
+            bool sameEvent = (tmp_Run_number == Run_number) && (tmp_Event_id == Event_id);
+            // nb = fChain->GetEntry(jentry);
 
-      if (!sameEvent)
-      {
-         // Calculate the efficiency and purity for the previous event and fill histogram
-         // cout << "Run number: " << tmp_Run_number << "\tEvent: " << tmp_Event_id << endl;
-         // cout << "nTP: " << nTP << " nFP: " << nFP << " nTN: " << nTN << " nFN: " << nFN << endl;
-         if ((nTP + nFN) != 0)
-         {
-            efficiency = nTP / (nTP + nFN);
-            // cout << "efficiency: " << efficiency << endl;
-            h_efficiency->Fill(efficiency);
-         }
-         else
-         {
-            h_efficiency->Fill(-0.2);
-         }
+            if (!sameEvent)
+            {
+               // Calculate the efficiency and purity for the previous event and fill histogram
 
-         if ((nTP + nFP) != 0)
-         {
-            purity = nTP / (nTP + nFP);
-            h_purity->Fill(purity);
+               if (nTP + nFN == 0)
+               {
+                  efficiency = -0.2;
+               }
+               else
+               {
+                  efficiency = nTP / (nTP + nFN);
+               }
+               if (nTP + nFP == 0)
+               {
+                  purity = -0.2;
+               }
+               else
+               {
+                  purity = nTP / (nTP + nFP);
+               }
+               h_efficiency->Fill(efficiency);
+               h_purity->Fill(purity);
+               // Reset the counters
+               nTP = 0;
+               nFP = 0;
+               nTN = 0;
+               nFN = 0;
+            }
          }
-         else
-         {
-            h_purity->Fill(-0.2);
-         }
-
-         // Reset the counters
-         nTP = 0;
-         nFP = 0;
-         nTN = 0;
-         nFN = 0;
       }
    }
 
