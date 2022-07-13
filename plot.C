@@ -19,6 +19,9 @@ void plot()
   TH2F *h_dEdxVSp_pos_probCut = (TH2F *)f.Get("h_dEdxVSp_pos_probCut");
   TH2F *h_dEdxVSp_neg_probCut = (TH2F *)f.Get("h_dEdxVSp_neg_probCut");
 
+  TH1F *h_efficiency = (TH1F *)f.Get("h_efficiency");
+  TH1F *h_purity = (TH1F *)f.Get("h_purity");
+
   TGraph *bethebloch_e = (TGraph *)g.Get("bethebloch_e");
   TGraph *bethebloch_pion = (TGraph *)g.Get("bethebloch_pion");
   TGraph *bethebloch_k = (TGraph *)g.Get("bethebloch_k");
@@ -178,6 +181,20 @@ void plot()
   bethebloch_d->Draw("same");
   // c.SaveAs("plots.pdf");
   c.SaveAs("./plots/h_dEdxVSp_pos_probCut.pdf");
+
+  // next plot
+  c.Clear();
+  c.SetLogy();
+  // h_efficiency->Rebin(7);
+  h_efficiency->Draw("hist");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_efficiency.pdf");
+
+  // next plot
+  c.Clear();
+  h_purity->Draw("hist");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_purity.pdf");
 
   // c.SaveAs("plots.pdf]"); // closing pdf
 }

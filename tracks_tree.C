@@ -39,7 +39,8 @@ void tracks_tree::Loop()
    Long64_t nentries = fChain->GetEntriesFast();
    if (Debug)
    {
-      nentries = 100000;
+      nentries = 1000000;
+      // nentries = 2265;
    }
 
    TFile *f = new TFile("histograms.root", "RECREATE");
@@ -62,10 +63,29 @@ void tracks_tree::Loop()
    TH2D *h_dEdxVSp_pos_probCut = new TH2D("h_dEdxVSp_pos_probCut", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
    TH2D *h_dEdxVSp_neg_probCut = new TH2D("h_dEdxVSp_neg_probCut", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
 
+   TH1D *h_efficiency = new TH1D("h_efficiency", "efficiency", 14, -0.3, 1.1);
+   TH1D *h_purity = new TH1D("h_purity", "purity", 14, -0.3, 1.1);
+
+   double p;
+
    double dEdx_BBp;
    double dEdx_BBk;
 
+   double nTP = 0;
+   double nFP = 0;
+   double nTN = 0;
+   double nFN = 0;
+
+   double efficiency;
+   double purity;
+
    Long64_t nbytes = 0, nb = 0;
+
+   nb = fChain->GetEntry(0);
+   int tmp_Run_number = Run_number;
+   // cout << "Run number: " << tmp_Run_number << endl;
+   int tmp_Event_id = Event_id;
+   // cout << "Event id: " << tmp_Event_id << endl;
 
    for (Long64_t jentry = 0; jentry < nentries; jentry++)
    {
@@ -73,6 +93,7 @@ void tracks_tree::Loop()
       if (ientry < 0)
          break;
       nb = fChain->GetEntry(jentry);
+      // cout << "jentry: " << jentry << endl;
       nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
@@ -91,7 +112,7 @@ void tracks_tree::Loop()
          {
             h_NPratio_after->Fill(NPratio);
             h_bxby_after->Fill(bx, by);
-            double p = sqrt(px * px + py * py + pz * pz);
+            p = sqrt(px * px + py * py + pz * pz);
             if (dEdx > 0)
             {
                h_dEdxVSp_pos_before->Fill(log10(p), dEdx);
@@ -104,9 +125,31 @@ void tracks_tree::Loop()
                   if (dEdx >= 0.5 && dEdx <= dEdx_BBp + 0.15 * (dEdx_BBk - dEdx_BBp))
                   {
                      h_dEdxVSp_pos_after->Fill(log10(p), dEdx);
+
+                     // Count positives
+                     if (probProton >= 0.95)
+                     {
+                        nTP++;
+                     }
+                     else
+                     {
+                        nFP++;
+                     }
+                  }
+                  else
+                  {
+                     // Count negatives
+                     if (probProton >= 0.95)
+                     {
+                        nFN++;
+                     }
+                     else
+                     {
+                        nTN++;
+                     }
                   }
 
-                  if (probProton >= 0.9)
+                  if (probProton >= 0.95)
                   {
                      h_dEdxVSp_pos_probCut->Fill(log10(p), dEdx);
                   }
@@ -117,6 +160,47 @@ void tracks_tree::Loop()
                h_dEdxVSp_neg_before->Fill(log10(p), -dEdx);
             }
          }
+      }
+
+      // Update tmp_Run_number and tmp_Event_id
+      tmp_Run_number = Run_number;
+      tmp_Event_id = Event_id;
+
+      // Check if the next event is the same as this
+      nb = fChain->GetEntry(jentry + 1);
+      bool sameEvent = (tmp_Run_number == Run_number) && (tmp_Event_id == Event_id);
+
+      if (!sameEvent)
+      {
+         // Calculate the efficiency and purity for the previous event and fill histogram
+         // cout << "Run number: " << tmp_Run_number << "\tEvent: " << tmp_Event_id << endl;
+         // cout << "nTP: " << nTP << " nFP: " << nFP << " nTN: " << nTN << " nFN: " << nFN << endl;
+         if ((nTP + nFN) != 0)
+         {
+            efficiency = nTP / (nTP + nFN);
+            // cout << "efficiency: " << efficiency << endl;
+            h_efficiency->Fill(efficiency);
+         }
+         else
+         {
+            h_efficiency->Fill(-0.2);
+         }
+
+         if ((nTP + nFP) != 0)
+         {
+            purity = nTP / (nTP + nFP);
+            h_purity->Fill(purity);
+         }
+         else
+         {
+            h_purity->Fill(-0.2);
+         }
+
+         // Reset the counters
+         nTP = 0;
+         nFP = 0;
+         nTN = 0;
+         nFN = 0;
       }
    }
 
