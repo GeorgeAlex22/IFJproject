@@ -1,8 +1,8 @@
-tracks_tree.exe: tracks_tree.C tracks_tree.h
-	g++ tracks_tree.C -o tracks_tree.exe `root-config --cflags --glibs` -I./BetheBloch/src/include -I./BetheBloch/kit-dedx-fitter/src BetheBloch/BetheBlochWrapper.so
+tracks_tree.exe: tracks_tree.cc tracks_tree.h
+	g++ tracks_tree.cc -o tracks_tree.exe `root-config --cflags --glibs` -I./BetheBloch/src/include -I./BetheBloch/kit-dedx-fitter/src
 
-bethebloch.exe: makeBetheBloch.C 
-	g++ makeBetheBloch.C -o bethebloch.exe `root-config --cflags --glibs` -I./BetheBloch/src/include -I./BetheBloch/kit-dedx-fitter/src BetheBloch/BetheBlochWrapper.so
+bethebloch.exe: makeBetheBloch.cc 
+	g++ makeBetheBloch.cc -o bethebloch.exe `root-config --cflags --glibs` -I./BetheBloch/src/include -I./BetheBloch/kit-dedx-fitter/src
 
 bethebloch: bethebloch.exe
 	./bethebloch.exe
@@ -14,4 +14,4 @@ run_debug: tracks_tree.exe ArSc150_charged_tree.root histograms.root
 	./tracks_tree.exe histograms.root ArSc150_charged_tree.root 1
 
 plot: histograms.root
-	root -l -b -q plot.C
+	root -l -b -q plot.cc
