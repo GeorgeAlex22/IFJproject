@@ -5,7 +5,7 @@ bethebloch.exe: makeBetheBloch.cc
 	g++ makeBetheBloch.cc -o bethebloch.exe `root-config --cflags --glibs` -I./BetheBloch/src/include -I./BetheBloch/kit-dedx-fitter/src ./BetheBloch/BetheBlochWrapper.so
 
 calculateEffPure.exe: calculateEffPure.cc 
-	g++ calculateEffPure.cc -o calculateEffPure.exe `root-config --cflags --glibs`
+	g++ calculateEffPure.cc -o calculateEffPure.exe `root-config --cflags --glibs` -I./BetheBloch/src/include -I./BetheBloch/kit-dedx-fitter/src ./BetheBloch/BetheBlochWrapper.so
 
 bethebloch: bethebloch.exe
 	./bethebloch.exe
