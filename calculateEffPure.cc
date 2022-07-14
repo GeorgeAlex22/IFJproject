@@ -37,7 +37,7 @@ int main()
 
     double eff, pur;
 
-    for (iBinX = 0; iBinX < nbinsptot; iBinX++)
+    for (iBinX = 1; iBinX <= nbinsptot; iBinX++)
     {
         ptot_0 = chisq_0->GetXaxis()->GetBinCenter(iBinX);
 
@@ -46,14 +46,14 @@ int main()
 
         v0 = log10(dEdx_BBp + x * (dEdx_BBk - dEdx_BBp));
 
-        for (iBinY = 0; iBinY < nbinspt; iBinY++)
+        for (iBinY = 1; iBinY <= nbinspt; iBinY++)
         {
             if (chisq_0->GetBinContent(iBinX, iBinY) != 0)
             {
 
-                cout << "----------------------------------------------------" << endl;
+                // cout << "----------------------------------------------------" << endl;
                 // cout << "v0 = " << v0 << endl;
-                cout << "iBinX = " << iBinX << " iBinY = " << iBinY << endl;
+                // cout << "iBinX = " << iBinX << " iBinY = " << iBinY << endl;
 
                 char hname[255];
                 TH1D *hmodel[5];
@@ -64,7 +64,7 @@ int main()
 
                 for (unsigned int ip = 0; ip < 5; ip++)
                 {
-                    sprintf(hname, "dist_model_0_1_%d_%d_%d", ip, iBinX, iBinY);
+                    sprintf(hname, "dist_model_0_1_%d_%d_%d", ip, iBinX - 1, iBinY - 1);
                     // cout << hname << endl;
 
                     hmodel[ip] = (TH1D *)f.Get(hname);
@@ -75,9 +75,9 @@ int main()
 
                     if (ip == 3)
                     {
-                        TP = hmodel[3]->Integral(1, iv_0);
+                        TP = hmodel[ip]->Integral(1, iv_0);
                         // cout << "TP successfull" << endl;
-                        FN = hmodel[3]->Integral(iv_0, hmodel[3]->GetNbinsX());
+                        FN = hmodel[ip]->Integral(iv_0, hmodel[ip]->GetNbinsX());
                         // cout << "FN successfull" << endl;
 
                         // cout << "nbins = " << hmodel[3]->GetNbinsX() << endl;
@@ -102,8 +102,9 @@ int main()
                     h_purity->SetBinContent(iBinX, iBinY, pur);
                     // cout << "purity set bin content successfull" << endl;
                 }
-                cout << "TP = " << TP << " FN = " << FN << " FP = " << FP << endl;
-                cout << "eff = " << eff << " pur = " << pur << endl;
+                // cout << "TP = " << TP << " FN = " << FN << " FP = " << FP << endl;
+                // cout << "eff = " << eff << endl;
+                cout << pur << endl;
                 // h_efficiency->SetBinContent(iBinX, iBinY, eff);
                 // h_purity->SetBinContent(iBinX, iBinY, pur);
             }
