@@ -37,7 +37,7 @@ int main()
 
     double eff, pur;
 
-    for (iBinX = 1; iBinX < nbinsptot; iBinX++)
+    for (iBinX = 0; iBinX < nbinsptot; iBinX++)
     {
         ptot_0 = chisq_0->GetXaxis()->GetBinCenter(iBinX);
 
@@ -46,7 +46,7 @@ int main()
 
         v0 = log10(dEdx_BBp + x * (dEdx_BBk - dEdx_BBp));
 
-        for (iBinY = 1; iBinY < nbinspt; iBinY++)
+        for (iBinY = 0; iBinY < nbinspt; iBinY++)
         {
             if (chisq_0->GetBinContent(iBinX, iBinY) != 0)
             {
