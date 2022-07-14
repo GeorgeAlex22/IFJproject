@@ -3,4 +3,6 @@
 *.exe
 *.vscode
 plots
-log
+log*
+purity_out
+*py
