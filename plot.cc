@@ -2,7 +2,7 @@ void plot()
 {
 
   // opening files
-  TFile f("histograms.root");
+  TFile f("tracks_filtered.root");
   TFile g("bethebloch.root");
 
   // get histograms from the files
@@ -16,11 +16,10 @@ void plot()
   TH2F *h_dEdxVSp_neg_before = (TH2F *)f.Get("h_dEdxVSp_neg_before");
   TH2F *h_dEdxVSp_pos_after = (TH2F *)f.Get("h_dEdxVSp_pos_after");
   TH2F *h_dEdxVSp_neg_after = (TH2F *)f.Get("h_dEdxVSp_neg_after");
+  TH2F *h_dEdxVSp_pos_final = (TH2F *)f.Get("h_dEdxVSp_pos_final");
+  TH2F *h_dEdxVSp_neg_final = (TH2F *)f.Get("h_dEdxVSp_neg_final");
   TH2F *h_dEdxVSp_pos_probCut = (TH2F *)f.Get("h_dEdxVSp_pos_probCut");
   TH2F *h_dEdxVSp_neg_probCut = (TH2F *)f.Get("h_dEdxVSp_neg_probCut");
-
-  TH1F *h_efficiency = (TH1F *)f.Get("h_efficiency");
-  TH1F *h_purity = (TH1F *)f.Get("h_purity");
 
   TGraph *bethebloch_e = (TGraph *)g.Get("bethebloch_e");
   TGraph *bethebloch_pion = (TGraph *)g.Get("bethebloch_pion");
@@ -67,6 +66,22 @@ void plot()
   // h_dEdxVSp_neg_before
   h_dEdxVSp_neg_before->GetYaxis()->SetTitle("dE/dx");
   h_dEdxVSp_neg_before->GetXaxis()->SetTitle("log_{10}(p)");
+
+  // h_dEdxVSp_pos_after
+  h_dEdxVSp_pos_after->GetYaxis()->SetTitle("dE/dx");
+  h_dEdxVSp_pos_after->GetXaxis()->SetTitle("log_{10}(p)");
+
+  // h_dEdxVSp_neg_after
+  h_dEdxVSp_neg_after->GetYaxis()->SetTitle("dE/dx");
+  h_dEdxVSp_neg_after->GetXaxis()->SetTitle("log_{10}(p)");
+
+  // h_dEdxVSp_pos_final
+  h_dEdxVSp_pos_final->GetYaxis()->SetTitle("dE/dx");
+  h_dEdxVSp_pos_final->GetXaxis()->SetTitle("log_{10}(p)");
+
+  // h_dEdxVSp_neg_final
+  h_dEdxVSp_neg_final->GetYaxis()->SetTitle("dE/dx");
+  h_dEdxVSp_neg_final->GetXaxis()->SetTitle("log_{10}(p)");
 
   TCanvas c;
   // c.SaveAs("plots.pdf["); // opening pdf
@@ -168,6 +183,17 @@ void plot()
 
   // next plot
   c.Clear();
+  h_dEdxVSp_pos_final->Draw("colz");
+  bethebloch_e->Draw("same");
+  bethebloch_pion->Draw("same");
+  bethebloch_k->Draw("same");
+  bethebloch_p->Draw("same");
+  bethebloch_d->Draw("same");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_dEdxVSp_pos_final.pdf");
+
+  // next plot
+  c.Clear();
   h_dEdxVSp_neg_after->Draw("colz");
   // c.SaveAs("plots.pdf");
   c.SaveAs("./plots/h_dEdxVSp_neg_after.pdf");
@@ -181,20 +207,6 @@ void plot()
   bethebloch_d->Draw("same");
   // c.SaveAs("plots.pdf");
   c.SaveAs("./plots/h_dEdxVSp_pos_probCut.pdf");
-
-  // next plot
-  c.Clear();
-  c.SetLogy();
-  // h_efficiency->Rebin(7);
-  h_efficiency->Draw("hist");
-  // c.SaveAs("plots.pdf");
-  c.SaveAs("./plots/h_efficiency.pdf");
-
-  // next plot
-  c.Clear();
-  h_purity->Draw("hist");
-  // c.SaveAs("plots.pdf");
-  c.SaveAs("./plots/h_purity.pdf");
 
   // c.SaveAs("plots.pdf]"); // closing pdf
 }

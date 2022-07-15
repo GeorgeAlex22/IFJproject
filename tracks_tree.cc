@@ -39,7 +39,7 @@ void tracks_tree::Loop()
     Long64_t nentries = fChain->GetEntriesFast();
     if (Debug)
     {
-        nentries = 1000000;
+        nentries = 100000;
         // nentries = 2265;
     }
 
@@ -61,6 +61,9 @@ void tracks_tree::Loop()
 
     TH2D *h_dEdxVSp_pos_after = new TH2D("h_dEdxVSp_pos_after", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
     TH2D *h_dEdxVSp_neg_after = new TH2D("h_dEdxVSp_neg_after", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
+
+    TH2D *h_dEdxVSp_pos_final = new TH2D("h_dEdxVSp_pos_final", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
+    TH2D *h_dEdxVSp_neg_final = new TH2D("h_dEdxVSp_neg_final", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
 
     TH2D *h_dEdxVSp_pos_probCut = new TH2D("h_dEdxVSp_pos_probCut", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
     TH2D *h_dEdxVSp_neg_probCut = new TH2D("h_dEdxVSp_neg_probCut", "p vs dE/dx", 100, -0.5, 2.3, 100, 0.5, 2);
@@ -154,6 +157,8 @@ void tracks_tree::Loop()
             h_pxpy_after->Fill(px, py);
             h_rapidityCM_after->Fill(rapidityCM);
 
+            h_dEdxVSp_pos_final->Fill(log10(p), dEdx);
+
             // Fill the the tracks_filtered tree with the tracks that pass the cuts
             tracks_filtered->Fill();
 
@@ -170,11 +175,12 @@ void tracks_tree::Loop()
     }
 
     ffilter->cd();
-    tracks_filtered->Write();
+    ffilter->Write();
     ffilter->Close();
 
-    f->Write();
-    f->Close();
+    // f->cd();
+    // f->Write();
+    // f->Close();
 }
 
 int main(int argc, char **argv)
