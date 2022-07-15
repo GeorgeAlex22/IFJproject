@@ -41,7 +41,7 @@ int main()
     {
         ptot_0 = chisq_0->GetXaxis()->GetBinCenter(iBinX);
 
-        dEdx_BBk = defaultBetheBloch(4, ptot_0);
+        dEdx_BBk = defaultBetheBloch(2, ptot_0);
         dEdx_BBp = defaultBetheBloch(3, ptot_0);
 
         v0 = log10(dEdx_BBp + x * (dEdx_BBk - dEdx_BBp));
@@ -104,7 +104,7 @@ int main()
                 }
                 // cout << "TP = " << TP << " FN = " << FN << " FP = " << FP << endl;
                 // cout << "eff = " << eff << endl;
-                cout << pur << endl;
+                // cout << pur << endl;
                 // h_efficiency->SetBinContent(iBinX, iBinY, eff);
                 // h_purity->SetBinContent(iBinX, iBinY, pur);
             }
