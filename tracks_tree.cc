@@ -44,6 +44,8 @@ void tracks_tree::Loop()
     }
 
     TFile *f = new TFile("histograms.root", "RECREATE");
+    TFile *ffilter = new TFile("tracks_filtered.root", "RECREATE");
+    TTree *tracks_filtered = fChain->CloneTree(0);
 
     TH1D *h_vz_before = new TH1D("h_vz_before", "VertexZ", 100, -700, -450);
     TH1D *h_vz_after = new TH1D("h_vz_after", "VertexZ", 100, -590, -570);
@@ -81,6 +83,8 @@ void tracks_tree::Loop()
 
     double rapidity;
     double rapidityCM;
+
+    double E;
 
     double dEdx_BBp;
     double dEdx_BBk;
@@ -127,8 +131,10 @@ void tracks_tree::Loop()
                             h_dEdxVSp_pos_after->Fill(log10(p), dEdx);
                             h_pxpy_before->Fill(px, py);
 
+                            // Calculate nucleon energy
+                            E = sqrt(p * p + m_nucleon * m_nucleon);
                             // Calculate rapidity at the center of mass
-                            rapidity = 0.5 * log((dEdx + pz) / (dEdx - pz));
+                            rapidity = 0.5 * log((E + pz) / (E - pz));
                             rapidityCM = rapidity - beam_rapidity;
                             h_rapidityCM_before->Fill(rapidityCM);
                             // Apply momentum cuts
@@ -136,6 +142,9 @@ void tracks_tree::Loop()
                             {
                                 h_pxpy_after->Fill(px, py);
                                 h_rapidityCM_after->Fill(rapidityCM);
+
+                                // Fill the the tracks_filtered tree with the tracks that pass the cuts
+                                tracks_filtered->Fill();
                             }
                         }
 
@@ -152,6 +161,10 @@ void tracks_tree::Loop()
             }
         }
     }
+
+    ffilter->cd();
+    tracks_filtered->Write();
+    ffilter->Close();
 
     f->Write();
     f->Close();
