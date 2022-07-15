@@ -110,18 +110,15 @@ void tracks_tree::Loop()
         bool npratio_cut = NPratio > 0.5 && NPratio < 1.1;
         bool bxby_cut = bx > -4 && bx < 4 && by > -2 && by < 2;
         if (!vertex_cut)
-        {
             continue;
-        }
 
         h_vz_after->Fill(VertexZ);
         h_NPratio_before->Fill(NPratio);
         h_bxby_before->Fill(bx, by);
 
         if (!(npratio_cut && bxby_cut))
-        {
             continue;
-        }
+
         h_NPratio_after->Fill(NPratio);
         h_bxby_after->Fill(bx, by);
         p = sqrt(px * px + py * py + pz * pz);
@@ -133,13 +130,10 @@ void tracks_tree::Loop()
             dEdx_BBk = Dedx::defaultBetheBloch(2, p);
 
             if (!(log10(p) >= 0.6 && log10(p) <= 2.1))
-            {
                 continue;
-            }
             if (!(dEdx >= 0.5 && dEdx <= dEdx_BBp + 0.15 * (dEdx_BBk - dEdx_BBp)))
-            {
                 continue;
-            }
+
             h_dEdxVSp_pos_after->Fill(log10(p), dEdx);
             h_pxpy_before->Fill(px, py);
 
@@ -151,9 +145,8 @@ void tracks_tree::Loop()
             h_rapidityCM_before->Fill(rapidityCM);
             // Apply momentum cuts
             if (!(abs(px) <= 1.5 && abs(py) <= 1.5 && abs(rapidityCM) <= 0.75))
-            {
                 continue;
-            }
+
             h_pxpy_after->Fill(px, py);
             h_rapidityCM_after->Fill(rapidityCM);
 
@@ -163,9 +156,7 @@ void tracks_tree::Loop()
             tracks_filtered->Fill();
 
             if (probProton < 0.9)
-            {
                 continue;
-            }
             h_dEdxVSp_pos_probCut->Fill(log10(p), dEdx);
         }
         if (dEdx < 0)

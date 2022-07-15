@@ -4,6 +4,7 @@ void plot()
   // opening files
   TFile f("tracks_filtered.root");
   TFile g("bethebloch.root");
+  TFile fhfilter("histogramsFiltered.root");
 
   // get histograms from the files
   TH1F *h_vz_before = (TH1F *)f.Get("h_vz_before");
@@ -26,6 +27,8 @@ void plot()
   TGraph *bethebloch_k = (TGraph *)g.Get("bethebloch_k");
   TGraph *bethebloch_p = (TGraph *)g.Get("bethebloch_p");
   TGraph *bethebloch_d = (TGraph *)g.Get("bethebloch_d");
+
+  TH2F *h_dEdxVSp_pos_acc = (TH2F *)fhfilter.Get("h_dEdxVSp_pos_acc");
 
   // set line colors
   // h_vz_before->SetLineColor(1);
@@ -207,6 +210,16 @@ void plot()
   bethebloch_d->Draw("same");
   // c.SaveAs("plots.pdf");
   c.SaveAs("./plots/h_dEdxVSp_pos_probCut.pdf");
+
+  c.Clear();
+  h_dEdxVSp_pos_acc->Draw("colz");
+  bethebloch_e->Draw("same");
+  bethebloch_pion->Draw("same");
+  bethebloch_k->Draw("same");
+  bethebloch_p->Draw("same");
+  bethebloch_d->Draw("same");
+  // c.SaveAs("plots.pdf");
+  c.SaveAs("./plots/h_dEdxVSp_pos_acc.pdf");
 
   // c.SaveAs("plots.pdf]"); // closing pdf
 }
