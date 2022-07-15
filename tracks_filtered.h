@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
 // Fri Jul 15 14:51:12 2022 by ROOT version 6.26/04
-// from TTree tracks_tree/./ArSc150_charged_tree.root
+// from TTree tracks_filtered/./ArSc150_charged_tree.root
 // found on file: tracks_filtered.root
 //////////////////////////////////////////////////////////
 
-#ifndef tracks_tree_h
-#define tracks_tree_h
+#ifndef tracks_filtered_h
+#define tracks_filtered_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -14,7 +14,7 @@
 
 // Header file for the classes stored in the TTree if any.
 
-class tracks_tree
+class tracks_filtered
 {
 public:
    TTree *fChain;  //! pointer to the analyzed TTree or TChain
@@ -78,8 +78,8 @@ public:
    TBranch *b_probProton;             //!
    TBranch *b_probDeuteron;           //!
 
-   tracks_tree(TTree *tree = 0);
-   virtual ~tracks_tree();
+   tracks_filtered(TTree *tree = 0);
+   virtual ~tracks_filtered();
    virtual Int_t Cut(Long64_t entry);
    virtual Int_t GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -91,8 +91,8 @@ public:
 
 #endif
 
-#ifdef tracks_tree_cxx
-tracks_tree::tracks_tree(TTree *tree) : fChain(0)
+#ifdef tracks_filtered_cxx
+tracks_filtered::tracks_filtered(TTree *tree) : fChain(0)
 {
    // if parameter tree is not specified (or zero), connect the file
    // used to generate this class and read the Tree.
@@ -103,26 +103,26 @@ tracks_tree::tracks_tree(TTree *tree) : fChain(0)
       {
          f = new TFile("tracks_filtered.root");
       }
-      f->GetObject("tracks_tree", tree);
+      f->GetObject("tracks_filtered", tree);
    }
    Init(tree);
 }
 
-tracks_tree::~tracks_tree()
+tracks_filtered::~tracks_filtered()
 {
    if (!fChain)
       return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t tracks_tree::GetEntry(Long64_t entry)
+Int_t tracks_filtered::GetEntry(Long64_t entry)
 {
    // Read contents of entry.
    if (!fChain)
       return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t tracks_tree::LoadTree(Long64_t entry)
+Long64_t tracks_filtered::LoadTree(Long64_t entry)
 {
    // Set the environment to read one entry
    if (!fChain)
@@ -138,7 +138,7 @@ Long64_t tracks_tree::LoadTree(Long64_t entry)
    return centry;
 }
 
-void tracks_tree::Init(TTree *tree)
+void tracks_filtered::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -184,7 +184,7 @@ void tracks_tree::Init(TTree *tree)
    Notify();
 }
 
-Bool_t tracks_tree::Notify()
+Bool_t tracks_filtered::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -195,7 +195,7 @@ Bool_t tracks_tree::Notify()
    return kTRUE;
 }
 
-void tracks_tree::Show(Long64_t entry)
+void tracks_filtered::Show(Long64_t entry)
 {
    // Print contents of entry.
    // If entry is not specified, print current entry
@@ -203,11 +203,11 @@ void tracks_tree::Show(Long64_t entry)
       return;
    fChain->Show(entry);
 }
-Int_t tracks_tree::Cut(Long64_t entry)
+Int_t tracks_filtered::Cut(Long64_t entry)
 {
    // This function may be called from Loop.
    // returns  1 if entry is accepted.
    // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef tracks_tree_cxx
+#endif // #ifdef tracks_filtered_cxx

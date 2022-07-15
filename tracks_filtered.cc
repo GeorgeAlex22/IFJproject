@@ -1,14 +1,18 @@
-#define tracks_tree_cxx
-#include "tracks_tree.h"
+#define tracks_filtered_cxx
+#include "tracks_filtered.h"
+#include "defaultBetheBloch.h"
 #include <TH2.h>
+#include <TGraph.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <iostream>
+using namespace std;
 
-void tracks_tree::Loop()
+void tracks_filtered::Loop()
 {
    //   In a ROOT session, you can do:
-   //      root> .L tracks_tree.C
-   //      root> tracks_tree t
+   //      root> .L tracks_filtered.C
+   //      root> tracks_filtered t
    //      root> t.GetEntry(12); // Fill t data members with entry number 12
    //      root> t.Show();       // Show values of entry 12
    //      root> t.Show(16);     // Read and show values of entry 16
@@ -44,4 +48,36 @@ void tracks_tree::Loop()
       nbytes += nb;
       // if (Cut(ientry) < 0) continue;
    }
+}
+
+int main(int argc, char **argv)
+{
+
+   if (argc < 3)
+   {
+      std::cout << "Usage:\n\t" << argv[0] << " output.root input1.root [input2.root input3.root ...]\n\n";
+      return 1;
+   }
+
+   std::cout << "Output: " << argv[1] << "\n";
+   // TChain is like a TTree, but can work across several root files
+   TChain *chain = new TChain("tracks_filtered");
+   std::cout << "Inputs:\n";
+   for (int i = 2; i < argc; i++)
+   {
+      std::cout << "\t" << argv[i] << "\n";
+      chain->Add(argv[i]);
+   }
+
+   tracks_filtered t(chain);
+
+   // if (argc > 3)
+   // {
+   //    t.Debug = true;
+   // }
+
+   t.outputFileName = argv[1];
+   t.Loop();
+
+   std::cout << "[ DONE ]\n\n";
 }
