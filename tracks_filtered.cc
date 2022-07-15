@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
    std::cout << "Output: " << argv[1] << "\n";
    // TChain is like a TTree, but can work across several root files
-   TChain *chain = new TChain("tracks_filtered");
+   TChain *chain = new TChain("tracks_tree");
    std::cout << "Inputs:\n";
    for (int i = 2; i < argc; i++)
    {
