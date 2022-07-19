@@ -1,4 +1,4 @@
-.PHONY: all clean bethebloch runE runE_debug runF runF_debug runF1 runF1_debug runF2 runF2_debug plot efficiency_purity
+.PHONY: all clean bethebloch runE runE_debug runF runF_debug runF1 runF1_debug runF2 runF2_debug plot efficiency_purity factorial_moment
 
 # ROOT libraries + Boost
 BOOSTHEADERS := /usr/include/boost
@@ -8,10 +8,10 @@ CPPFLAGS    := $(shell $(ROOTCONFIG) --cflags) -MMD -MP -Isrc/include -I$(BOOSTH
 CXXFLAGS    := $(shell $(ROOTCONFIG) --auxcflags) -g -O3 -fPIC -Wall -Wextra
 LDFLAGS     := $(shell $(ROOTCONFIG) --ldflags) -Wl,--no-as-needed
 ROOTLIBS    := $(shell $(ROOTCONFIG) --glibs) -lGenVector
-BOOSTLIBS    := -L$(BOOSTLIBDIR) -lboost_program_options
+BOOSTLIBS    := -L$(BOOSTLIBDIR) -lboost_program_options -lboost_context
 
 MYINCS := -I./Tools/src/include -I./BetheBloch/src/include -I./BetheBloch/kit-dedx-fitter/src
-MYLIBS := ./BetheBloch/BetheBlochWrapper.so ./Tools/Event.so
+MYLIBS := ./BetheBloch/BetheBlochWrapper.so ./Tools/Event.so  ./Tools/EventMixer.noDict.so ./Tools/CutsMap.noDict.so
 
 # Inputs
 EVROOTS := $(wildcard ./EventTrees/ArScCharged150T2_r*.root)
@@ -66,6 +66,9 @@ mTTD_cut: mTTD_cut.exe accepted.root
 
 mTTD_cut_debug: mTTD_cut.exe accepted.root
 	./mTTD_cut.exe mTTD_cut.root accepted.root -d
+
+factorial_moment: factorial_moment.exe mTTD_cut.root
+	./factorial_moment.exe factorial_moment.root mTTD_cut.root 
 
 plot: filtered.root
 	root -l -b -q plot.C
