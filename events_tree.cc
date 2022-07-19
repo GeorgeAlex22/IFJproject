@@ -124,14 +124,14 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
             // Calculate nucleon energy
             double E = sqrt(p * p + m_nucleon * m_nucleon);
             // Calculate rapidity at the center of mass
-            double rapidity = 0.5 * log((E + pz) / (E - pz));
+            double rapidity = 0.5 * log((E + t.pz) / (E - t.pz));
             double rapidityCM = rapidity - beam_rapidity;
             h_rapidityCM_before.Fill(rapidityCM);
             // Apply momentum cuts
             if (!(abs(t.px) <= 1.5 && abs(t.py) <= 1.5 && abs(rapidityCM) <= 0.75))
                 continue;
 
-            h_pxpy_after.Fill(px, py);
+            h_pxpy_after.Fill(t.px, t.py);
             h_rapidityCM_after.Fill(rapidityCM);
 
             if (t.dEdx > 0)
