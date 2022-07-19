@@ -10,6 +10,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TMath.h>
+#include <TRandom3.h>
 #include <iostream>
 using namespace std;
 
@@ -24,7 +25,7 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
     fChain.SetBranchAddress("Event", &pevent);
 
     // clone tree structure
-    // TTree *tree_accepted = (TTree *)fChain.CloneTree(0);
+    TTree *tree_mTTD = (TTree *)fChain.CloneTree(0);
 
     Long64_t nentries = fChain.GetEntries();
 
@@ -59,16 +60,17 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
 
     bool isInside;
 
+    TRandom3 *rnd = new TRandom3(0);
+
     for (Long64_t jentry = 0; jentry < nentries; jentry++)
     {
         fChain.GetEntry(jentry);
 
-        // loop over tracks, filling newTracks
-        // std::vector<EventClass::Track> newTracks;
         std::vector<bool> tracks_mask(pevent->tracks.size(), false);
+        // Begin pairs loop
         for (int i = 0; i < (int)pevent->tracks.size() - 1; i++)
         {
-            for (int j = i + 1; j < pevent->tracks.size(); j++)
+            for (int j = i + 1; j < (int)pevent->tracks.size(); j++)
             {
                 rho1 = 1 / sqrt(pevent->tracks[i].px * pevent->tracks[i].px + pevent->tracks[i].pz * pevent->tracks[i].pz);
                 sx1 = pevent->tracks[i].px * rho1;
@@ -95,6 +97,16 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
                     h_dsxdsy_discarded.Fill(Dsx, Dsy);
                     h_dsxdrho_discarded.Fill(Drho, Dsx);
                     h_dsydrho_discarded.Fill(Drho, Dsx);
+
+                    // Randomly discard track
+                    if (rnd->Rndm() > 0.5)
+                    {
+                        tracks_mask[i] = true;
+                    }
+                    else
+                    {
+                        tracks_mask[j] = true;
+                    }
                 }
                 else
                 {
@@ -102,17 +114,26 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
                     h_dsxdrho_after.Fill(Drho, Dsx);
                     h_dsydrho_after.Fill(Drho, Dsy);
                 }
-
-                // we passed all cuts, fill newTracks
-                // newTracks.push_back();
             }
-        } // end of tracks loop
+        } // end of pairs loop
+
+        // loop over tracks, filling newTracks
+        std::vector<EventClass::Track> newTracks;
+        // Begin tracks loop for filtering pair members
+        for (int i = 0; i < (int)pevent->tracks.size(); i++)
+        {
+            if (tracks_mask[i])
+                continue;
+
+            // we passed all cuts, fill newTracks
+            newTracks.push_back(pevent->tracks[i]);
+        } // end of tracks loop for filtering pair members
 
         // point event->tracks to new tracks
-        // pevent->tracks = newTracks;
+        pevent->tracks = newTracks;
 
         // fill new event to tree_filtered
-        // tree_accepted->Fill();
+        tree_mTTD->Fill();
 
     } // end of events loop
 
@@ -126,7 +147,7 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
     h_dsxdsy_after.Write();
     h_dsxdrho_after.Write();
     h_dsydrho_after.Write();
-
+    tree_mTTD->Write();
     f.Close();
 }
 
@@ -140,8 +161,6 @@ int main(int argc, char **argv)
     }
 
     bool Debug = false;
-    int first_cBin = 0;
-    int last_cBin = 5;
 
     std::cout << "Output: " << argv[1] << "\n";
     // TChain is like a TTree, but can work across several root files
