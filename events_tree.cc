@@ -136,11 +136,11 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
 
             if (t.dEdx > 0)
             {
-                h_dEdxVSp_pos_final.Fill(log10(p), dEdx);
+                h_dEdxVSp_pos_final.Fill(log10(p), t.dEdx);
             }
             else
             {
-                h_dEdxVSp_neg_final.Fill(log10(p), -dEdx);
+                h_dEdxVSp_neg_final.Fill(log10(p), -t.dEdx);
             }
 
             // we passed all cuts, fill newTracks
