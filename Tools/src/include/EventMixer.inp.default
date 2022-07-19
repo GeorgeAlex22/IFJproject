@@ -1,0 +1,3 @@
+bufferSize  50000
+mixTimes    10
+cBinRange   0   5

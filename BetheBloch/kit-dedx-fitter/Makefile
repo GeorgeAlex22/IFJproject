@@ -1,13 +1,15 @@
 .PHONY: all clean
 #~ .SECONDARY: # use to suppress deletion of intermediate files
 
+BOOSTHEADERS := /usr/include/boost
+BOOSTLIBDIR := /lib/x86_64-linux-gnu
 ROOTCONFIG := root-config
-CPPFLAGS    := $(shell $(ROOTCONFIG) --cflags) -Isrc -I$(BOOSTROOT)/include
+CPPFLAGS    := $(shell $(ROOTCONFIG) --cflags) -Isrc -I$(BOOSTHEADERS)
 #CXXFLAGS    := $(shell $(ROOTCONFIG) --auxcflags) -g -O3 -fPIC -Wall -Wextra
 CXXFLAGS    := $(shell $(ROOTCONFIG) --auxcflags) -ggdb3 -O0 -fPIC -Wall -Wextra
 LDFLAGS     := $(shell $(ROOTCONFIG) --ldflags)
 ROOTLIBS    := $(shell $(ROOTCONFIG) --libs)
-BOOSTLIBS    := -L$(BOOSTROOT)/lib -lboost_program_options
+BOOSTLIBS    := -L$(BOOSTLIBDIR) -lboost_program_options
 
 LIB := $(patsubst src/%LinkDef.h, %.so, $(wildcard src/*LinkDef.h))
 PROGALL := $(patsubst src/%Main.cc, %, $(wildcard src/*Main.cc))

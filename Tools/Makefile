@@ -3,9 +3,8 @@
 
 BOOSTHEADERS := /usr/include/boost
 BOOSTLIBDIR := /lib/x86_64-linux-gnu
-EXTINC      := -Ikit-dedx-fitter/src
 ROOTCONFIG := root-config
-CPPFLAGS    := $(shell $(ROOTCONFIG) --cflags) -MMD -MP -Isrc/include -I$(BOOSTHEADERS) $(EXTINC)
+CPPFLAGS    := $(shell $(ROOTCONFIG) --cflags) -MMD -MP -Isrc/include -I$(BOOSTHEADERS)
 CXXFLAGS    := $(shell $(ROOTCONFIG) --auxcflags) -g -O3 -fPIC -Wall -Wextra
 # --std=c++11 -Wall -Wextra
 LDFLAGS     := $(shell $(ROOTCONFIG) --ldflags)
