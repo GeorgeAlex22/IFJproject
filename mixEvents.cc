@@ -69,7 +69,7 @@ https: // root.cern/manual/
 
     /* Random number generator & seed */
     TRandom3 rndGen;
-    rndGen.SetSeed(2650323802); // fixed seed for RNG
+    // rndGen.SetSeed(2650323802); // fixed seed for RNG
     cout << "Entering loop..." << endl;
 
     /* Define Event Mixer */

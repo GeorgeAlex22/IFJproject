@@ -71,14 +71,17 @@ void plot()
   h_vz_before->Draw("hist");
 
   TLine *l_left = new TLine(h_vz_after->GetXaxis()->GetXmin(), 0, h_vz_after->GetXaxis()->GetXmin(), h_vz_before->GetMaximum());
-  l_left->SetLineColor(kBlack);
+  l_left->SetLineColor(kRed);
   l_left->SetLineStyle(9);
   l_left->Draw();
 
   TLine *l_right = new TLine(h_vz_after->GetXaxis()->GetXmax(), 0, h_vz_after->GetXaxis()->GetXmax(), h_vz_before->GetMaximum());
-  l_right->SetLineColor(kBlack);
+  l_right->SetLineColor(kRed);
   l_right->SetLineStyle(9);
   l_right->Draw();
+
+  TLatex *text = new TLatex();
+  text->DrawLatexNDC(0.2, 0.7, "Cuts: -570 #leq VertexZ #leq -590");
 
   // c.SaveAs("plots.pdf");
   c.SaveAs("./plots/h_vz_before.pdf"); // plot

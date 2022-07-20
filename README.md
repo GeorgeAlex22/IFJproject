@@ -22,4 +22,4 @@ make mTTD_cut
 make factorial_moment # Takes much time
 make mixEvents
 ./factorial_moment.exe mix_config.inp mixEvents.root accepted.root # Takes a very long time
-make plot
+make plot   
