@@ -1,3 +1,9 @@
+################### STRANGE WARNING ##############################
+# of M-bins    :  150
+/home/george/IFJ_PAN_PPSS/IFJproject_v2/python_intermittency/./cordim_boot.py:190: H5pyDeprecationWarning: Using astype() as a context manager is deprecated. Slice the returned object instead, like: ds.astype(np.int32)[:10]
+  with bweights_set.astype(np.int64):
+18480 events processed
+
 ---- Description of fields in "tracks_tree" ROOT TTree for Ar+Sc collision data: ----
 
 

@@ -8,3 +8,7 @@ purity_out
 *.py
 *.d
 EventTrees
+*.dat
+*.npz
+*.pickle
+*.hdf5
