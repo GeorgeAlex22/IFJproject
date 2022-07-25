@@ -11,7 +11,7 @@
 #include <iostream>
 using namespace std;
 
-void Loop(TChain &fChain, char *outputFileName, bool Debug, int first_cBin, int last_cBin)
+void Loop(TChain &fChain, char *outputFileName, bool Debug, int first_cBin, int last_cBin, bool mc)
 {
     // Define output file
     TFile f(outputFileName, "RECREATE");
@@ -64,6 +64,7 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug, int first_cBin, int 
     double dEdx_BBk;
 
     bool isAccepted;
+    bool isPositive;
     bool sameEvent;
 
     int tmp_Run_number;
@@ -90,7 +91,20 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug, int first_cBin, int 
 
             isAccepted = (bool)h_acc->GetBinContent(h_acc->FindFixBin(rapidityCM, t.px, t.py));
 
-            if (!isAccepted)
+            isPositive = t.dEdx > 0;
+            if (mc)
+            {
+                isPositive = true;
+            }
+
+            // double check in case of mc
+            if (!(abs(t.px) <= 1.5 && abs(t.py) <= 1.5)) // && abs(rapidityCM) <= 0.75))
+            {
+                // cout << "out of range" << endl;
+                continue;
+            }
+
+            if (!(isAccepted && isPositive))
                 continue;
 
             h_dEdxVSp_pos_acc.Fill(log10(p), t.dEdx);
@@ -138,6 +152,7 @@ int main(int argc, char **argv)
     }
 
     bool Debug = false;
+    bool mc = false;
     int first_cBin = 0;
     int last_cBin = 5;
 
@@ -167,12 +182,18 @@ int main(int argc, char **argv)
             std::cout << "Selected cBins = 3,4" << endl;
             continue;
         }
+        if (!strncmp(argv[i], "-mc", 3))
+        {
+            mc = true;
+            std::cout << "running on CMC events" << endl;
+            continue;
+        }
 
         std::cout << "\t" << argv[i] << "\n";
         chain.Add(argv[i]);
     }
 
-    Loop(chain, argv[1], Debug, first_cBin, last_cBin);
+    Loop(chain, argv[1], Debug, first_cBin, last_cBin, mc);
 
     std::cout << "[ DONE ]\n\n";
 }

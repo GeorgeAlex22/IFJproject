@@ -1,4 +1,4 @@
-.PHONY: all clean bethebloch runE runE_debug runF runF_debug runF1 runF1_debug runF2 runF2_debug plot efficiency_purity factorial_moment
+.PHONY: all clean bethebloch runE runE_debug runF runF_debug runF1 runF1_debug runF2 runF2_debug plot plotF2 efficiency_purity graphF2 graphF2_debug
 
 # ROOT libraries + Boost
 BOOSTHEADERS := /usr/include/boost
@@ -67,11 +67,28 @@ mTTD_cut: mTTD_cut.exe accepted.root
 mTTD_cut_debug: mTTD_cut.exe accepted.root
 	./mTTD_cut.exe mTTD_cut.root accepted.root -d
 
-factorial_moment: factorial_moment.exe mTTD_cut.root
-	./factorial_moment.exe factorial_moment.root mTTD_cut.root 
+graphF2: graphF2.exe mTTD_cut.dat mTTD_cut1.dat mTTD_cut2.dat  mTTD_cut_mix.dat mTTD_cut_mix1.dat mTTD_cut_mix2.dat
+	./graphF2.exe graphF2_data.root mTTD_cut.dat
+	./graphF2.exe graphF2_data1.root mTTD_cut1.dat
+	./graphF2.exe graphF2_data2.root mTTD_cut2.dat
+	./graphF2.exe graphF2_mix.root mTTD_cut_mix.dat
+	./graphF2.exe graphF2_mix1.root mTTD_cut_mix1.dat
+	./graphF2.exe graphF2_mix2.root mTTD_cut_mix2.dat
+
+graphF2_debug: graphF2.exe mTTD_cut.dat mTTD_cut1.dat mTTD_cut2.dat  mTTD_cut_mix.dat mTTD_cut_mix1.dat mTTD_cut_mix2.dat
+	./graphF2.exe graphF2_data.root mTTD_cut.dat -d
+	./graphF2.exe graphF2_data1.root mTTD_cut1.dat -d
+	./graphF2.exe graphF2_data2.root mTTD_cut2.dat -d
+	./graphF2.exe graphF2_mix.root mTTD_cut_mix.dat -d
+	./graphF2.exe graphF2_mix1.root mTTD_cut_mix1.dat -d
+	./graphF2.exe graphF2_mix2.root mTTD_cut_mix2.dat -d
+
 
 plot: filtered.root
 	root -l -b -q plot.C
+
+plotF2: 
+	root -l -b -q plotF2.C
 
 efficiency_purity: calculateEffPure.exe
 	./calculateEffPure.exe

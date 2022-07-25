@@ -10,7 +10,7 @@
 #include <iostream>
 using namespace std;
 
-void Loop(TChain &fChain, char *outputFileName, bool Debug)
+void Loop(TChain &fChain, char *outputFileName, bool Debug, double probProton_cut)
 {
     // Define output file
     TFile f(outputFileName, "RECREATE");
@@ -143,6 +143,9 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
                 h_dEdxVSp_neg_final.Fill(log10(p), -t.dEdx);
             }
 
+            if (t.probProton < probProton_cut)
+                continue;
+
             // we passed all cuts, fill newTracks
             newTracks.push_back(t);
         } // end of tracks loop
@@ -187,6 +190,7 @@ int main(int argc, char **argv)
     }
 
     bool Debug = false;
+    double probProton_cut = 0;
 
     std::cout << "Output: " << argv[1] << "\n";
     // TChain is like a TTree, but can work across several root files
@@ -200,11 +204,36 @@ int main(int argc, char **argv)
             std::cout << "Debug mode on" << endl;
             continue;
         }
+
+        if (!strncmp(argv[i], "-80", 3))
+        { // check if we have
+
+            probProton_cut = 0.8;
+
+            std::cout << "Selected probProton >= " << probProton_cut << endl;
+            continue;
+        }
+        if (!strncmp(argv[i], "-90", 3))
+        { // check if we have
+
+            probProton_cut = 0.9;
+
+            std::cout << "Selected probProton >= " << probProton_cut << endl;
+            continue;
+        }
+        if (!strncmp(argv[i], "-95", 3))
+        { // check if we have
+
+            probProton_cut = 0.95;
+
+            std::cout << "Selected probProton >= " << probProton_cut << endl;
+            continue;
+        }
+
         std::cout << "\t" << argv[i] << "\n";
         chain.Add(argv[i]);
     }
-
-    Loop(chain, argv[1], Debug);
+    Loop(chain, argv[1], Debug, probProton_cut);
 
     std::cout << "[ DONE ]\n\n";
 }

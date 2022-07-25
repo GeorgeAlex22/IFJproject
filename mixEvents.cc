@@ -30,7 +30,7 @@ void Loop(EventMixer &eventMixer, char *outputFileName)
     {
         pevent = &event;
         tree_mixed.Fill();
-        cout << "Filled tree with event " << endl;
+        // cout << "Filled tree with event " << endl;
     }
 
     // write mixed tree to file

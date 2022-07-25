@@ -1,4 +1,4 @@
 # Mixed Events config
 bufferSize              50000
-mixTimes                1
+mixTimes                10
 cBinRange               0       5

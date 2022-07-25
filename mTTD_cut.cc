@@ -96,7 +96,7 @@ void Loop(TChain &fChain, char *outputFileName, bool Debug)
                 {
                     h_dsxdsy_discarded.Fill(Dsx, Dsy);
                     h_dsxdrho_discarded.Fill(Drho, Dsx);
-                    h_dsydrho_discarded.Fill(Drho, Dsx);
+                    h_dsydrho_discarded.Fill(Drho, Dsy);
 
                     // Randomly discard track
                     if (rnd->Rndm() > 0.5)

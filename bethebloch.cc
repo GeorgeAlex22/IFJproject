@@ -23,7 +23,7 @@ void makeBetheBloch()
     bethebloch_d->SetName("bethebloch_d");
 
     double log10_p_min = -0.5;
-    double log10_p_max = 2.0;
+    double log10_p_max = 2.5;
 
     for (double log10_p = log10_p_min; log10_p <= log10_p_max; log10_p += 0.01)
     {

@@ -14,7 +14,7 @@ using namespace std;
 void Loop(char *outputFileName, char *inputFileName, bool Debug)
 {
     int num = 0;
-    int M2values[150];
+    double M2values[150];
     double F2[150];
     double nanan[150];
     double F2_boot[150];
@@ -24,7 +24,7 @@ void Loop(char *outputFileName, char *inputFileName, bool Debug)
     int M_max = 150;
     int M;
 
-    int Mvalues[150];
+    double Mvalues[150];
     for (M = M_min - 1; M < M_max; M++)
     {
         Mvalues[M] = M;
@@ -42,16 +42,16 @@ void Loop(char *outputFileName, char *inputFileName, bool Debug)
     {
         while (!inputFile.eof())
         {
-            cout << "Line = " << num + 1 << endl;
             if (num >= 5)
             {
                 if (num > 154)
                     break;
-                inputFile >> M2values[num] >> F2[num] >> nanan[num] >> F2_boot[num] >> sigma_F2[num];
-                if (Debug)
-                {
-                    cout << "M2= " << M2values[num] << " F2= " << F2[num] << " NAN= " << nanan[num] << " F2_boot= " << F2_boot[num] << " sigma_F2= " << sigma_F2[num] << endl;
-                }
+                inputFile >> M2values[num - 5] >> F2[num - 5] >> sigma_F2[num - 5];
+                if (!Debug)
+                    continue;
+
+                cout << "Line = " << num + 1 << endl;
+                cout << "M2= " << M2values[num - 5] << " F2= " << F2[num - 5] << " sigma_F2= " << sigma_F2[num - 5] << endl;
             }
             num++;
         }
@@ -59,34 +59,40 @@ void Loop(char *outputFileName, char *inputFileName, bool Debug)
     inputFile.close();
 
     // Define output file
-    // TFile f(outputFileName, "RECREATE");
+    TFile f(outputFileName, "RECREATE");
 
-    // TGraph g_F2(M_max, Mvalues, F2);
-    // g_F2.SetTitle("F2");
+    TGraph g_F2(M_max, Mvalues, F2);
+    g_F2.SetTitle("F2");
+    g_F2.SetName("g_F2");
 
-    // TGraph g_sigma_F2(M_max, Mvalues, sigma_F2);
-    // g_sigma_F2.SetTitle("sigma_F2");
+    TGraph g_sigma_F2(M_max, Mvalues, sigma_F2);
+    g_sigma_F2.SetTitle("sigma_F2");
+    g_sigma_F2.SetName("g_sigma_F2");
 
-    // TGraphErrors g_F2_errors(M_max, Mvalues, F2, 0, sigma_F2);
-    // g_F2_errors.SetTitle("F2_errors");
+    TGraphErrors g_F2_errors(M_max, Mvalues, F2, 0, sigma_F2);
+    g_F2_errors.SetTitle("F2_errors");
+    g_F2_errors.SetName("g_F2_errors");
 
-    // TGraph g_F2_M2(M_max, M2values, F2);
-    // g_F2_M2.SetTitle("F2 vs M2");
+    TGraph g_F2_M2(M_max, M2values, F2);
+    g_F2_M2.SetTitle("F2 vs M2");
+    g_F2_M2.SetName("g_F2_M2");
 
-    // TGraph g_sigma_F2_M2(M_max, M2values, sigma_F2);
-    // g_sigma_F2_M2.SetTitle("sigma_F2 vs M2");
+    TGraph g_sigma_F2_M2(M_max, M2values, sigma_F2);
+    g_sigma_F2_M2.SetTitle("sigma_F2 vs M2");
+    g_sigma_F2_M2.SetName("g_sigma_F2_M2");
 
-    // TGraphErrors g_F2_errors_M2(M_max, M2values, F2, 0, sigma_F2);
-    // g_F2_errors_M2.SetTitle("F2_errors vs M2");
+    TGraphErrors g_F2_errors_M2(M_max, M2values, F2, 0, sigma_F2);
+    g_F2_errors_M2.SetTitle("F2_errors vs M2");
+    g_F2_errors_M2.SetName("g_F2_errors_M2");
 
-    // f.cd();
-    // g_F2.Write();
-    // g_sigma_F2.Write();
-    // g_F2_errors.Write();
-    // g_F2_M2.Write();
-    // g_sigma_F2_M2.Write();
-    // g_F2_errors_M2.Write();
-    // f.Close();
+    f.cd();
+    g_F2.Write();
+    g_sigma_F2.Write();
+    g_F2_errors.Write();
+    g_F2_M2.Write();
+    g_sigma_F2_M2.Write();
+    g_F2_errors_M2.Write();
+    f.Close();
 }
 
 int main(int argc, char **argv)
